@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_fb_page_alias_tree" model="ir.ui.view">
+            <field name="name">odoo_multileads.fb_page.tree</field>
+            <field name="model">odoo_multileads.fb_page</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name"/>
+                    <field name="page_id"/>
+                    <field name="access_token" password="True"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_fb_page_alias" model="ir.actions.act_window">
+            <field name="name">Alias de Páginas</field>
+            <field name="res_model">odoo_multileads.fb_page</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="email_template_new_fb_lead" model="mail.template">
+            <field name="name">Notificación: Nuevo Lead de Facebook</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="subject">Recibido: Nuevo prospecto de {{ object.campaign_id.name or 'Facebook' }}</field>
+            <field name="body_html" type="html">
+                <div style="font-family: 'Arial', sans-serif; font-size: 14px;">
+                    <p>Hola Equipo,</p>
+                    <p>Se ha registrado un nuevo lead desde <b>Facebook Ads</b>.</p>
+                    <hr/>
+                    <p><b>Detalles del Prospecto:</b></p>
+                    <ul>
+                        <!-- Aquí aplicamos la sintaxis QWeb para HTML -->
+                        <li><b>Nombre:</b> <t t-out="object.contact_name or 'N/A'"/></li>
+                        <li><b>Correo:</b> <t t-out="object.email_from or 'N/A'"/></li>
+                        <li><b>Teléfono:</b> <t t-out="object.phone or 'N/A'"/></li>
+                        <li><b>Origen:</b> <t t-out="object.name"/></li>
+                    </ul>
+                    <hr/>
+                    <p>Puedes gestionarlo haciendo clic en el siguiente botón:</p>
+                    <div style="margin: 16px 0;">
+                        <!-- Ajustamos el enlace del botón para que QWeb inyecte el ID -->
+                        <a t-attf-href="/web#id={{ object.id }}&amp;model=crm.lead&amp;view_type=form"
+                           style="background-color: #875A7B; padding: 10px 20px; text-decoration: none; color: #fff; border-radius: 5px;">
+                            Ver Lead en Odoo
+                        </a>
+                    </div>
+                </div>
+            </field>
+        </record>
+
+        <menuitem id="menu_fb_config"
+                  name="Configuración Facebook"
+                  parent="crm.menu_crm_config_lead"
+                  sequence="100"
+                  groups="base.group_system"/>
+
+        <menuitem id="menu_fb_pages"
+                  name="Alias de Páginas"
+                  parent="menu_fb_config"
+                  action="action_fb_page_alias"/>
+
+    </data>
+</odoo>

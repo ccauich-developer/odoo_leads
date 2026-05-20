@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_blazar_lead_log_tree" model="ir.ui.view">
+            <field name="name">blazar.lead.log.tree</field>
+            <field name="model">blazar.lead.log</field>
+            <field name="arch" type="xml">
+                <tree string="Logs de Leads Externos" decoration-danger="state=='error'" decoration-success="state=='success'" decoration-info="state=='pending'">
+                    <field name="create_date" string="Fecha"/>
+                    <field name="source"/>
+                    <field name="state"/>
+                    <field name="lead_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_blazar_lead_log_form" model="ir.ui.view">
+            <field name="name">blazar.lead.log.form</field>
+            <field name="model">blazar.lead.log</field>
+            <field name="arch" type="xml">
+                <form string="Log de Lead Externo">
+                    <header>
+                        <button name="action_retry_processing"
+                                string="Reintentar Procesamiento"
+                                type="object"
+                                class="oe_highlight"
+                                invisible="state == 'success'"/>
+
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="source"/>
+                                <field name="create_date"/>
+                                <field name="lead_id"/>
+                            </group>
+                            <group>
+                                <field name="error_message" invisible="state != 'error'"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Payload (JSON Recibido)">
+                                <field name="payload" widget="text"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_blazar_lead_log" model="ir.actions.act_window">
+            <field name="name">Logs de Webhooks</field>
+            <field name="res_model">blazar.lead.log</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_blazar_lead_log"
+                  name="Logs de Leads Multiconector"
+                  parent="crm.crm_menu_config"
+                  action="action_blazar_lead_log"
+                  sequence="100"
+                  groups="base.group_system"/>
+    </data>
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_blazar_lead_log_user,blazar.lead.log.user,model_blazar_lead_log,base.group_user,1,1,1,0
+access_blazar_lead_log_system,blazar.lead.log.system,model_blazar_lead_log,base.group_system,1,1,1,1
+access_fb_page_user,odoo_multileads.fb_page.user,model_odoo_multileads_fb_page,base.group_user,1,1,1,1
+access_fb_page_system,odoo_multileads.fb_page.system,model_odoo_multileads_fb_page,base.group_system,1,1,1,1
